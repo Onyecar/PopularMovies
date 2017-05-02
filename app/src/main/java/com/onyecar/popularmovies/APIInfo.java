@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class APIInfo {
 
     private static final String TAG = APIInfo.class.getSimpleName();
-    public static String API_KEY = "8c229d17d45e76bb9db75b4e0824ccd2";
+    public static String API_KEY = "";
     public static String API_PARAM = "api_key";
     public static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
