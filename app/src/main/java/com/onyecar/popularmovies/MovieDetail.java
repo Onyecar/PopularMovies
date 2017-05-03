@@ -33,7 +33,7 @@ public class MovieDetail extends AppCompatActivity {
             if(callingIntent.hasExtra(MainActivity.MOVIE_DETAILS)){
                 Movie movie = callingIntent.getParcelableExtra(MainActivity.MOVIE_DETAILS);
                 txtMovieTitle.setText(movie.getTitle());
-                txtMovieDescription.setText(movie.getOriginalTitle());
+                txtMovieDescription.setText(movie.getOverview());
                 txtVoteAverage.setText(movie.getVoteAverage().toString()+"/10.0");
                 txtReleaseDate.setText(movie.getReleaseDate());
                 String imageUrl = APIInfo.IMAGE_BASE_URL+APIInfo.IMAGE_SIZE+movie.getPosterPath();
