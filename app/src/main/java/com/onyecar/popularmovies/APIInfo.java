@@ -19,17 +19,21 @@ public class APIInfo {
     private static final String TAG = APIInfo.class.getSimpleName();
     public static String API_KEY = "";
     public static String API_PARAM = "api_key";
-    public static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+    public static String SORT_PARAM = "sort_by";
+    public static final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     public static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     public static final String IMAGE_SIZE = "w185/";
+    public static final String RATE_SORT = "vote_average.desc";
+    public static final String POPULARITY_SORT = "popularity.desc";
 
 
 
 
     public static URL buildUrl(String sortCriteria) {
-        String newURL = BASE_URL+sortCriteria;
+        String newURL = BASE_URL;
         Uri builtUri = Uri.parse(newURL).buildUpon()
                 .appendQueryParameter(API_PARAM, API_KEY)
+                .appendQueryParameter(SORT_PARAM, sortCriteria)
                 .build();
 
         URL url = null;

@@ -1,6 +1,7 @@
 package com.onyecar.popularmovies;
 
 import android.content.Context;
+import android.os.Parcel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,12 +26,11 @@ public final class MovieJsonUtil {
         String ORIGINAL_TITLE = "original_title";
         String ORIGINAL_LANGUAGE = "original_language";
         String TITLE = "title";
-        String BACK_DROP_PATH = "back_drop_path";
+        String BACK_DROP_PATH = "backdrop_path";
         String POPULARITY = "popularity";
-        String VOTE_COUNT = "voteCount";
+        String VOTE_COUNT = "vote_count";
         String VIDEO = "video";
         String VOTE_AVERAGE = "vote_average";
-
 
         Movie[] parsedMovieData = null;
 
@@ -41,7 +41,13 @@ public final class MovieJsonUtil {
             parsedMovieData = new Movie[moviesArray.length()];
             for (int i=0; i<moviesArray.length();i++){
                 JSONObject oneMovie = moviesArray.getJSONObject(i);
-                Movie movie = new Movie();
+                Movie movie = new Movie(oneMovie.getString(POSTER_PATH),
+                        oneMovie.getBoolean(ADULT), oneMovie.getString(OVERVIEW),
+                        oneMovie.getString(RELEASE_DATE), oneMovie.getInt(ID),
+                        oneMovie.getString(ORIGINAL_TITLE), oneMovie.getString(ORIGINAL_LANGUAGE),
+                        oneMovie.getString(TITLE), oneMovie.getString(BACK_DROP_PATH),
+                        oneMovie.getDouble(POPULARITY), oneMovie.getInt(VOTE_COUNT),
+                        oneMovie.getBoolean(VIDEO), oneMovie.getDouble(VOTE_AVERAGE));
                 movie.setPosterPath(oneMovie.getString(POSTER_PATH));
                 movie.setAdult(oneMovie.getBoolean(ADULT));
                 movie.setOverview(oneMovie.getString(OVERVIEW));

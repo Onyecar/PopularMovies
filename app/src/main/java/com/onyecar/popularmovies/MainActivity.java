@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,11 +24,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private TextView mErrorMessageDisplay;
     private RecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
-    public static final String MOVIE_NAME = "MOVIE_NAME";
-    public static final String DESCRIPTION = "DESCRIPTION";
-    public static final String POSTER_PATH = "POSTER_PATH";
-    public static final String RELEASE_DATE = "RELEASE_DATE";
-    public static final String VOTE_AVERAGE = "VOTE_AVERAGE";
     public static final String MOVIE_DETAILS = "MOVIE_DETAILS";
 
     @Override
@@ -41,25 +39,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
         mLoadingIndicator=(ProgressBar)findViewById(R.id.pb_loading_indicator);
-        loadMovieData();
+        loadMovieData(APIInfo.RATE_SORT);
     }
-    private void loadMovieData() {
+    private void loadMovieData(String sortCriteria) {
         showWeatherDataView();
 
-        new fetchMovieData().execute();
+        new fetchMovieData().execute(sortCriteria);
     }
     @Override
     public void onClick(Movie movie) {
         Context context = this;
         Class destinationClass = MovieDetail.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        Bundle bundle = new Bundle();
-        bundle.putString(MOVIE_NAME, movie.getTitle());
-        bundle.putString(DESCRIPTION, movie.getOverview());
-        bundle.putString(POSTER_PATH, movie.getPosterPath());
-        bundle.putString(RELEASE_DATE, movie.getReleaseDate());
-        bundle.putDouble(VOTE_AVERAGE, movie.getVoteAverage());
-        intentToStartDetailActivity.putExtra(MOVIE_DETAILS, bundle);
+        intentToStartDetailActivity.putExtra(MOVIE_DETAILS, movie);
         startActivity(intentToStartDetailActivity);
     }
     private void showWeatherDataView() {
@@ -114,5 +106,33 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 showErrorMessage();
             }
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
+        MenuInflater inflater = getMenuInflater();
+        /* Use the inflater's inflate method to inflate our menu layout to this menu */
+        inflater.inflate(R.menu.main, menu);
+        /* Return true so that the menu is displayed in the Toolbar */
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_rate) {
+            mMovieAdapter.setMovieData(null);
+            loadMovieData(APIInfo.RATE_SORT);
+            return true;
+        }
+        if (id == R.id.action_popular) {
+            mMovieAdapter.setMovieData(null);
+            loadMovieData(APIInfo.POPULARITY_SORT);
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }
